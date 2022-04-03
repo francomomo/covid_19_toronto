@@ -1,0 +1,36 @@
+---
+title: "Seniors are still the most susceptible people as we are entering the sixth wave of COVID-19"
+subtitle: "An analysis of the COVID-19 pandemic in Toronto with an emphasis on the past six months"
+author: Ka Chun Mo
+thanks: "Code and data are available at: https://github.com/francomomo/covid_19_toronto."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+abstract: "Ontario is relaxing its COVID-19 measures even though health care experts are predicting an incoming sixth wave of COVID-19. It is crucial for us to continue taking measures to protect ourselves and the people around us and to seek insights to keep ourselves inform. In this paper, we provide an up-to-date analysis of the various aspects of COVID-19 with an emphasis of the past six months. We found that seniors are still the most susceptible population group after two years into the COVID-19 pandemic."
+output:
+  bookdown::pdf_document2
+toc: FALSE
+# bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(palmerpenguins)
+```
+
+# Introduction
+
+COVID-19 in Toronto.
+Toronto is entering a sixth wave of COVID-19. Ever since the virus has been first identified in December 2019 in China, countries around the world
+
+What motivates us? How does it relate to us?
+
+What we found?
+
+# Data
+
+## Limitations
+
+# Results
+
+# Discussion
