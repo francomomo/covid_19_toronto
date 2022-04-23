@@ -21,6 +21,7 @@ library(dplyr)
 ```
 
 ```{r data, include=FALSE}
+# read data
 covid_data <- read_csv("../../outputs/data/covid_data.csv")
 ```
 
@@ -76,10 +77,10 @@ ggplot(data=covid_data, aes(x=age_group, fill=age_group)) +
 
 ## Most COVID-19 cases are sporadic without any outbreak associated
 
-As shown in figure \@ref(fig:outbreak-associated), most COVID-19 cases are sporadic without any outbreak-associated. This is interesting because we can tell most COVID-19 cases might not be related to any outbreak associated with a gathering of people. Rather, people might get COVID-19 without going to a place that has been later identified as a sight that caused most people to get sick. Combining with the insight that we can get from \@ref(fig:source-of-infection), there is a significant number of COVID-19 cases that do not have any information on their sources of infection. This shows that there might be a portion of people who were in the sporadic infection category who did not any information about how they got COVID-19. 
+As shown in figure \@ref(fig:outbreak-associated), most COVID-19 cases are sporadic without any outbreak-associated. This is interesting because we can tell most COVID-19 cases might not be related to any outbreak associated with a gathering of people. Rather, people might get COVID-19 without going to a place that has been later identified as a sight that caused most people to get sick. Combining with the insight that we can get from figure \@ref(fig:source-of-infection), there is a significant number of COVID-19 cases that do not have any information on their sources of infection. This shows that there might be a portion of people who were in the sporadic infection category who did not any information about how they got COVID-19. 
 
 ```{r outbreak-associated, echo=FALSE, fig.cap='Outbreak Associated'}
-# Create bar plot for age group
+# Create bar plot for outbreak associated
 ggplot(data=covid_data, aes(x=outbreak_associated, fill=outbreak_associated)) + 
   geom_bar(stat="count") +
   xlab('Outbreak Associated') +
@@ -88,7 +89,7 @@ ggplot(data=covid_data, aes(x=outbreak_associated, fill=outbreak_associated)) +
 ```
 
 ```{r source-of-infection, echo=FALSE, fig.cap='Source of Infection'}
-# Create bar plot for age group
+# Create bar plot for source of infection
 ggplot(data=covid_data, aes(x=source_of_infection, fill=source_of_infection)) + 
   geom_bar(stat="count") +
   xlab('Source of Infection') +
@@ -98,7 +99,7 @@ ggplot(data=covid_data, aes(x=source_of_infection, fill=source_of_infection)) +
 
 ## Household and Community Contact are the most common source of infection 
 
-Community Contact is the most common source of infection as shown in \@ref(fig:source-of-infection). Most COVID-19 cases spread the virus to the people in their community since they might interact the most with people who are close to them. It is also worthy to point out that there are a significant number of COVID-19 cases that could not identify how they got infected with COVID-19. Since it is hard to pinpoint an exact time and place of how people got COVID-19 and most COVID-19 cases are sporadic, it is indeed hard for people to identify where exactly they got COVID-19. This also reflects how important it is for people to have COVID-19 exposure apps on their phones so that they can be alerted if they ever came across someone who had COVID-19 at least.
+Community Contact is the most common source of infection as shown in figure \@ref(fig:source-of-infection). Most COVID-19 cases spread the virus to the people in their community since they might interact the most with people who are close to them. It is also worthy to point out that there are a significant number of COVID-19 cases that could not identify how they got infected with COVID-19. Since it is hard to pinpoint an exact time and place of how people got COVID-19 and most COVID-19 cases are sporadic, it is indeed hard for people to identify where exactly they got COVID-19. This also reflects how important it is for people to have COVID-19 exposure apps on their phones so that they can be alerted if they ever came across someone who had COVID-19 at least.
 
 Other than Community Contact and No Information, Household contact is the third most common source of infection. It is understandable that once a person in a household got COVID-19, the rest of the household is also very likely to get COVID-19 since they are in close proximity for a huge portion of their days. Healthcare Institutions are the fourth most common source of infection. Staff in Healthcare Institutions might come in close contact with people who are sick. It is very likely that they will have close contact with someone who has COVID-19 since people who are infected with COVID-19 will go to health institutions for help. Surprisingly, Congregate Settings are the second least common source of infection. This might be due to incomplete data, but it is also worth noting that people might do a good job of avoiding going to crowded places during COVID-19. Also, since people travel less during COVID-19, travel is the least common source of infection.
 
@@ -111,10 +112,11 @@ For Household Infection as shown in figure \@ref(fig:household-contact-group), m
 For Congregate Settings as shown in figure \@ref(fig:congregate-settings-group), the number of COVID-19 cases is approximately the same for the age groups between 30 and 59 years old. Those are the age groups that go to congregate settings such as public transportation areas and offices the most. Whereas the other age groups will either stay at home or avoid crowded places. For Travel Infection as shown in figure \@ref(fig:travel-group), people who are 20 to 29 years old again are again the age group that might get COVID-19 the most from traveling since they are more active than other age groups. 
 
 ```{r community-age-group, echo=FALSE, fig.cap='Community Infection by Age Group'}
+# Filter community infection data
 community_data <- covid_data %>%
   filter(source_of_infection=="Community")
 
-# Create bar plot for age group
+# Create bar plot for community infection
 ggplot(data=community_data, aes(x=age_group, fill=age_group)) + 
   geom_bar(stat="count") +
   xlab('Community Infection by Age Group') +
@@ -123,10 +125,11 @@ ggplot(data=community_data, aes(x=age_group, fill=age_group)) +
 ```
 
 ```{r healthcare-institutions-age-group, echo=FALSE, fig.cap='Healthcare Institutions Infection by Age Group'}
+# Filter healthcare institutions infection data
 healthcare_institutions_data <- covid_data %>%
   filter(source_of_infection=="Outbreaks, Healthcare Institutions")
 
-# Create bar plot for age group
+# Create bar plot for healthcare institutions
 ggplot(data=healthcare_institutions_data, aes(x=age_group, fill=age_group)) + 
   geom_bar(stat="count") +
   xlab('Healthcare Institutions Infection by Age Group') +
@@ -135,10 +138,11 @@ ggplot(data=healthcare_institutions_data, aes(x=age_group, fill=age_group)) +
 ```
 
 ```{r household-contact-group, echo=FALSE, fig.cap='Household Contact Infection by Age Group'}
+# Filter household infection data
 household_contact_data <- covid_data %>%
   filter(source_of_infection=="Household Contact")
 
-# Create bar plot for age group
+# Create bar plot for household infection
 ggplot(data=household_contact_data, aes(x=age_group, fill=age_group)) + 
   geom_bar(stat="count") +
   xlab('Household Contact Infection by Age Group') +
@@ -147,10 +151,11 @@ ggplot(data=household_contact_data, aes(x=age_group, fill=age_group)) +
 ```
 
 ```{r close-contact-group, echo=FALSE, fig.cap='Close Contact Infection by Age Group'}
+# Filter close contact data
 close_contact_data <- covid_data %>%
   filter(source_of_infection=="Close Contact")
 
-# Create bar plot for age group
+# Create bar plot for close contact infection
 ggplot(data=close_contact_data, aes(x=age_group, fill=age_group)) + 
   geom_bar(stat="count") +
   xlab('Close Contact Infection by Age Group') +
@@ -159,10 +164,11 @@ ggplot(data=close_contact_data, aes(x=age_group, fill=age_group)) +
 ```
 
 ```{r congregate-settings-group, echo=FALSE, fig.cap='Congregate Settings Infection by Age Group'}
+# Filter congregate setting data
 congregate_settings_data <- covid_data %>%
   filter(source_of_infection=="Outbreaks, Congregate Settings")
 
-# Create bar plot for age group
+# Create bar plot for congregate setting infection
 ggplot(data=congregate_settings_data, aes(x=age_group, fill=age_group)) + 
   geom_bar(stat="count") +
   xlab('Congregate Settings Infection by Age Group') +
@@ -171,10 +177,11 @@ ggplot(data=congregate_settings_data, aes(x=age_group, fill=age_group)) +
 ```
 
 ```{r travel-group, echo=FALSE, fig.cap='Travel Infection by Age Group'}
+# Filter travel data
 travel_data <- covid_data %>%
   filter(source_of_infection=="Travel")
 
-# Create bar plot for age group
+# Create bar plot for travel infection data
 ggplot(data=travel_data, aes(x=age_group, fill=age_group)) + 
   geom_bar(stat="count") +
   xlab('Travel Infection by Age Group') +
@@ -187,10 +194,11 @@ ggplot(data=travel_data, aes(x=age_group, fill=age_group)) +
 As shown in figure \@ref(fig:fatal-age-group), fatality increases as age increases. Seniors remain the most vulnerable age group among all the age groups. Seniors might have weaker immune systems than other age groups. They are the most vulnerable when facing COVID-19. It is our responsibility to protect ourselves and continue practicing social distancing so that we can protect ourselves as well as the vulnerable population in our society. Even though, we only see the numbers from our data analysis. But even if one fatal case is serious enough, we should do our best to spread truthful information and protect the people around us.
 
 ```{r fatal-age-group, echo=FALSE, fig.cap='Fatality by Age Group'}
+# Filter fata cases
 fatal_data <- covid_data %>%
   filter(outcome=="FATAL")
 
-# Create bar plot for age group
+# Create bar plot for fatality by age group
 ggplot(data=fatal_data, aes(x=age_group, fill=age_group)) + 
   geom_bar(stat="count") +
   xlab('Fatality by Age Group') +
@@ -209,7 +217,7 @@ In this paper, we mostly look at the distributions of the variables we have from
 # Graphs
 
 ```{r gender, echo=FALSE, fig.cap='Gender'}
-# Create bar plot for age group
+# Create bar plot for gender
 ggplot(data=covid_data, aes(x=client_gender, fill=client_gender)) + 
   geom_bar(stat="count") +
   xlab('Gender') +
@@ -218,7 +226,7 @@ ggplot(data=covid_data, aes(x=client_gender, fill=client_gender)) +
 ```
 
 ```{r reported-date, echo=FALSE, fig.cap='Reported Date'}
-# Create bar plot for age group
+# Create bar plot for reported date
 ggplot(data=covid_data, aes(x=reported_date)) + 
   geom_line(stat="count") +
   xlab('Reported Date') +
@@ -227,10 +235,11 @@ ggplot(data=covid_data, aes(x=reported_date)) +
 ```
 
 ```{r fatal-gender, echo=FALSE, fig.cap='Fatality by Gender'}
+# Filter fatal data
 fatal_data <- covid_data %>%
   filter(outcome=="FATAL")
 
-# Create bar plot for age group
+# Create bar plot for fatality by gender
 ggplot(data=fatal_data, aes(x=client_gender, fill=client_gender)) + 
   geom_bar(stat="count") +
   xlab('Fatality by Gender') +

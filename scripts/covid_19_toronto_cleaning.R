@@ -1,10 +1,13 @@
-# Import library for data cleaning
+# import library for data cleaning
 library(janitor)
-# Import library for data manipulation
+
+# import library for data manipulation
 library(tidyverse)
-#
+
+# import library to import data
 library(opendatatoronto)
-#
+
+# import library for data manipulation
 library(dplyr)
 
 # get package
@@ -19,8 +22,9 @@ datastore_resources <- filter(resources, tolower(format) %in% c('csv', 'geojson'
 # load the first datastore resource as a sample
 raw_data <- filter(datastore_resources, row_number()==1) %>% get_resource()
 
+# clean variable names
 covid_data <- raw_data %>%
   clean_names() 
 
-# Write the cleaned data to a file
+# write the cleaned data to a file
 write_csv(covid_data, "./outputs/data/covid_data.csv")
