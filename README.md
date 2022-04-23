@@ -4,7 +4,7 @@ This repo features an analysis of the COVID-19 pandemic in Toronto. This repo co
 
 # Reproduction
 
-We obtained the data from Open Data Toronto. A link to the data can be found [here)](https://open.toronto.ca/dataset/covid-19-cases-in-toronto/).
+We obtained the data from Open Data Toronto. A link to the data can be found [here](https://open.toronto.ca/dataset/covid-19-cases-in-toronto/).
 
 # Guide to this repo
 
