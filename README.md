@@ -8,7 +8,7 @@ We obtained the data from Open Data Toronto. A link to the data can be found [he
 
 # Guide to this repo
 
-The R script used to clean the data can be found in the [scripts folder](https://github.com/francomomo/covid_19_toronto/blob/main/scripts/covid_19_toronto_cleaning.R).
+The R script used to clean the data can be found in the [scripts folder](https://github.com/francomomo/covid_19_toronto/blob/main/scripts/).
 
 The processed data can be found in the [data folder](https://github.com/francomomo/covid_19_toronto/tree/main/outputs/data).
 
