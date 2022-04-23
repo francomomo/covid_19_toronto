@@ -1,5 +1,5 @@
 ---
-title: "Seniors are still the most susceptible people as we are entering the sixth wave of COVID-19"
+title: "Seniors remain the most vulnerable population group as Toronto enters the 6th wave of COVID-19"
 subtitle: "An analysis of the COVID-19 pandemic in Toronto with an emphasis on the past six months"
 author: Ka Chun Mo
 thanks: "Code and data are available at: https://github.com/francomomo/covid_19_toronto."
@@ -8,29 +8,262 @@ abstract: "Ontario is relaxing its COVID-19 measures even though health care exp
 output:
   bookdown::pdf_document2
 toc: FALSE
-# bibliography: references.bib
+bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
-library(palmerpenguins)
+
+library(opendatatoronto)
+library(dplyr)
 ```
+
+```{r data, include=FALSE}
+covid_data <- read_csv("../../outputs/data/covid_data.csv")
+```
+
 
 # Introduction
 
-COVID-19 in Toronto.
-Toronto is entering a sixth wave of COVID-19. Ever since the virus has been first identified in December 2019 in China, countries around the world
+As Toronto is entering a sixth wave of COVID-19, health care experts have been urging Toronto residents to continue taking measures to protect themselves and the people around them. With the Omicron BA. 2 sub-variant starting to become the dominant version infecting people in Toronto, Toronto residents are seeing a surging of cases as of March 30.  Even though Toronto already lifted the mask mandate, there are still people questioning the validity of this decision and its consequences of it. Some people are frustrated by the lifting of the mask mandate and they want the government to bring back the mask mandate. They believe the mask mandate should be kept in place since the COVID-19 pandemic still is not gone yet. 
 
-What motivates us? How does it relate to us?
+The Ontario government is still taking measures to protect the most vulnerable group of Toronto residents. Ontario plans to offer the fourth dose to residents who are 60 and up. There are already ongoing planning to open fourth-dose access for people in long-term care and retirement home. The second booster shot aims to be an added level of protection for the residents of Ontario. Moreover, Ontario is also providing Paxlovid, an antiviral medication developed by Pfizer as a treatment for COVID-19, to the adults with the highest risk. It is not available to all Toronto residents but it serves to protect the most vulnerable population group. It is both the government's responsibility and our responsibility to do justice to ourselves and also to the vulnerable population.
 
-What we found?
+With the COVID-19 pandemic situation constantly evolving and new studies and information coming out all the time, we aim to investigate the COVID-19 pandemic data in Toronto to have a better understanding of various aspects (e.g. gender, age, number of new cases) of the situation in Toronto. We want to have a better understanding of the overall COVID-19 situation in Toronto so we can be better informed to make the best decision ourselves. We investigated various distributions of the variables of the COVID-19 cases in Toronto data from the Open Data Portal. We found that people who are 60 and up are still the most susceptible people as we are entering the sixth wave of the COVID-19 pandemic in Toronto. To better protect ourselves and according to our analysis, we should still take measures such as wearing masks and social distancing.
+
+In this paper, we will first take an overview of the dataset we got from Open Data Toronto. We will look at the information Open Data Toronto gathered for each COVID-19 case to have a general insight into what we can look into further. We are also going to discuss the methods we use to analyze the data. Then, we will discuss the limitation of our dataset. We are going to construct a linear regression model to identify the important factors that contribute to the fatality of COVID-19 cases. Towards the end of the paper, we will dedicate a significant portion to discussing the results we found after analyzing the COVID-19 dataset.
 
 # Data
 
+## Overview
+
+We got the COVID-19 cases in Toronto dataset from Open Data Toronto portal [@citeOpendatatoronto]. The dataset contains 18 variables and approximately 32000 observations. A summary statistics table of all the variables can be found in Section \@ref(summary-statistics). "id" is a variable that is used as a unique row identifier for Open Data Toronto's database. "assigned_id" is a unique ID assigned by Toronto Public Health for the purpose of processing the data and post it on Open Data for tracking specific cases. "outbreak_associated" are associated with the category of outbreaks of COVID-19 in Toronto. The outbreak can be associated with the long-term care home, hospitals, congregate settings, household contact, and so on. "age_group" is the age group of the person at the time of illness. Age groups are divided into less than or equal to 19 years old, 20-29 years old, 30-39 years old, 40-49 years old, 50-59 years old, 60-69 years old, 70-79 years old, 80-89 years old, 90+, and unknown. "neighbourhood_name" contains 140 distinct neighborhood name in Toronto and they are established to help government and community agencies to identify the meaningful geographic area. "fsa" is the first three characters of postal code of the cases' primary home address. "source_of_infection" is the most likely way that the person got COVID-19. "classification" is categorized as either confirmed or probable. "episode_date" is the best estimate of when the person got COVID-19. "reported_date" is the date on which the case is reported to Toronto Public Health. "client_gender" is the self-reported gender of the case. "outcome" is the outcome of the person who got COVID-19 and it can be either fatal or resolved or active. For the rest of the variables ("currently_hospitalized", "currently_in_icu", "currently_intubated", "ever_hospitalized", "ever_in_icu", "ever_intubated") the variable names are self-explanatory and they can take values of either yes or no. We did not create any new variables for this paper.
+
+There are similar COVID-19 datasets such as datasets from the City of Toronto and the COVID-19 Advisory for Ontario. However, we chose to use the dataset from Open Data Toronto because similar to other datasets and Open Data Toronto provides instructions on how to import their data using R code.
+
+## Methods
+
+In this paper, we use R, a Statistical Computing Language, to analyze this dataset [@citeR]. We use tidyverse for data manipulation [@citeTidyverse]. We also use dplyr for data manipulation [@citeDplyr]. We use janitor for examining and cleaning dirty data [@citeJanitor]. We created either bar plots or line plots for most of the variables. We also renamed the column names to convert them into lower case and replace spaces with underscores for easier analysis.
+
 ## Limitations
+
+The COVID-19 data from Open Data Toronto is subject to change as Ontario's public health investigation receives more reports of the ongoing pandemic. The data might not be up-to-date for the most recent few days. However, the data will be updated completely and get overwritten at 8:30 AM on the Tuesday of every week. Then, the data would be posted on the following Wednesday. Furthermore, the numbers may be different from the numbers on other websites since the data are extracted at different times and from different sources.
+
+# Model
+
+We created a model to predict fatality. We mutate the data so that the outcome will have value 1 if the outcome is fatal and the outcome will have value 0 if the outcome is resolved. We used age group, source of infection, and gender as independent variable to predict fatality. We create a multiple linear regression with those variables' factors. We found that the factors that have p-value that are less than 0.05 are the age groups that are older than 60 years old and if the source of infection is in health care institutions. Those significant variables all have parameter estimates larger than 0. We reject the null hypothesis for those variables and we conclude that if the person who got infected with COVID-19 is older than 60 years old or if people who got infected COVID-19 in healthcare institutions, the outcome of those cases will more likely to be fatal. The model statistics is shown in section \@ref(model-summary).
 
 # Results
 
+From our analysis, we found that most people who got COVID-19 are those who are 20 to 29 years old as shown in figure \@ref(fig:age-group). People who are 20 to 29 years old are the most active compared to the other age groups. Figure \@ref(fig:travel-group) also shows that people who are 20 to 29 years old got COVID-19 the most often from traveling since they go out and travel the most. We also found that most COVID-19 cases are sporadic without any outbreak associated with it. This means that people might have a harder time identifying their sources of infection. As shown in figure \@ref(fig:source-of-infection), there is a significant portion of COVID-19 cases that cannot identify the source of infection. Different age groups also have different significant sources of infection as shown from figure \@ref(fig:community-age-group) to figure \@ref(fig:travel-group). Our analysis also reaffirmed that seniors are still the most vulnerable population group as Toronto is entering into the sixth wave of COVID-19. It is still important for us to wear masks, social distance, and take measures to protect ourselves and the people around us.
+
 # Discussion
+
+## Most people who got COVID-19 are from 20 to 29 years old
+
+Most people who got COVID-19 are from 20 to 29 years old. Figure \@ref(fig:age-group) shows a distribution of the number of people who got COVID-19 by their ages. The reason why people from 20 to 29 years old got COVID-19 might be because they are usually the most active among all the ages. Compared to other age groups, people from 20 to 29 years old are young adults and they have the most freedom to go out and meet up with friends. They also have a stronger desire to meet people and they have a better chance to recover from COVID-19 compared to other age groups. For the age groups from 30 to 59 years old, they have a similar number of cases. People from 30 to 59 years old usually have their own family or planning to start their own family. Compared to 20 to 29 years old, people from 30 to 59 years old might choose to stay at home and are less active. People who are 19 years old and younger have a lower number of cases compared to the aforementioned age groups. This might be due to people who are 19 years old and younger are usually still under their parents' control. To protect their children better, parents might decide to make sure their kids go out less and stay at home more often. Starting from 60 years old, there is a decreasing number of cases as age increases.
+
+```{r age-group, echo=FALSE, fig.cap='Age Group'}
+# Create bar plot for age group
+ggplot(data=covid_data, aes(x=age_group, fill=age_group)) + 
+  geom_bar(stat="count") +
+  xlab('Age Group') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+## Most COVID-19 cases are sporadic without any outbreak associated
+
+As shown in figure \@ref(fig:outbreak-associated), most COVID-19 cases are sporadic without any outbreak-associated. This is interesting because we can tell most COVID-19 cases might not be related to any outbreak associated with a gathering of people. Rather, people might get COVID-19 without going to a place that has been later identified as a sight that caused most people to get sick. Combining with the insight that we can get from \@ref(fig:source-of-infection), there is a significant number of COVID-19 cases that do not have any information on their sources of infection. This shows that there might be a portion of people who were in the sporadic infection category who did not any information about how they got COVID-19. 
+
+```{r outbreak-associated, echo=FALSE, fig.cap='Outbreak Associated'}
+# Create bar plot for age group
+ggplot(data=covid_data, aes(x=outbreak_associated, fill=outbreak_associated)) + 
+  geom_bar(stat="count") +
+  xlab('Outbreak Associated') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+```{r source-of-infection, echo=FALSE, fig.cap='Source of Infection'}
+# Create bar plot for age group
+ggplot(data=covid_data, aes(x=source_of_infection, fill=source_of_infection)) + 
+  geom_bar(stat="count") +
+  xlab('Source of Infection') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+## Household and Community Contact are the most common source of infection 
+
+Community Contact is the most common source of infection as shown in \@ref(fig:source-of-infection). Most COVID-19 cases spread the virus to the people in their community since they might interact the most with people who are close to them. It is also worthy to point out that there are a significant number of COVID-19 cases that could not identify how they got infected with COVID-19. Since it is hard to pinpoint an exact time and place of how people got COVID-19 and most COVID-19 cases are sporadic, it is indeed hard for people to identify where exactly they got COVID-19. This also reflects how important it is for people to have COVID-19 exposure apps on their phones so that they can be alerted if they ever came across someone who had COVID-19 at least.
+
+Other than Community Contact and No Information, Household contact is the third most common source of infection. It is understandable that once a person in a household got COVID-19, the rest of the household is also very likely to get COVID-19 since they are in close proximity for a huge portion of their days. Healthcare Institutions are the fourth most common source of infection. Staff in Healthcare Institutions might come in close contact with people who are sick. It is very likely that they will have close contact with someone who has COVID-19 since people who are infected with COVID-19 will go to health institutions for help. Surprisingly, Congregate Settings are the second least common source of infection. This might be due to incomplete data, but it is also worth noting that people might do a good job of avoiding going to crowded places during COVID-19. Also, since people travel less during COVID-19, travel is the least common source of infection.
+
+## Different age groups have different significant source of infection 
+
+From figure \@ref(fig:community-age-group) to figure \@ref(fig:travel-group), we have several bar plots that show the age distribution of COVID-19 cases by the source of infection. Indeed, we see that there is a different age distribution for different sources of infection. For Community Infection as shown in figure \@ref(fig:community-age-group), people who are 20 to 29 years old are the people who got COVID-19 most often from community infection since they are the most active age group among all the age groups. Whereas, people who are above 80 years old are the people who got COVID-19 from healthcare institutions as shown in figure \@ref(fig:healthcare-institutions-age-group) since there are more older people who stay in healthcare institutions and COVID-19 might also be spreading in healthcare institutions.
+
+For Household Infection as shown in figure \@ref(fig:household-contact-group), most people who got COVID-19 from their household are people who are 19 and younger. There is a significant portion of people who are 19 and younger who are not adults yet. They might stay at home more often than other age groups as ordered by their parents. The only way for those people to get COVID-19 is for their family members to bring COVID-19 home. Close Contact also reflects the same scenario as what we have just talked about as shown in figure \@ref(fig:close-contact-group). People who are 19 and younger are the people who got the most infected from close contact. The number of COVID-19 cases from close contact decreases as age increases. 
+
+For Congregate Settings as shown in figure \@ref(fig:congregate-settings-group), the number of COVID-19 cases is approximately the same for the age groups between 30 and 59 years old. Those are the age groups that go to congregate settings such as public transportation areas and offices the most. Whereas the other age groups will either stay at home or avoid crowded places. For Travel Infection as shown in figure \@ref(fig:travel-group), people who are 20 to 29 years old again are again the age group that might get COVID-19 the most from traveling since they are more active than other age groups. 
+
+```{r community-age-group, echo=FALSE, fig.cap='Community Infection by Age Group'}
+community_data <- covid_data %>%
+  filter(source_of_infection=="Community")
+
+# Create bar plot for age group
+ggplot(data=community_data, aes(x=age_group, fill=age_group)) + 
+  geom_bar(stat="count") +
+  xlab('Community Infection by Age Group') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+```{r healthcare-institutions-age-group, echo=FALSE, fig.cap='Healthcare Institutions Infection by Age Group'}
+healthcare_institutions_data <- covid_data %>%
+  filter(source_of_infection=="Outbreaks, Healthcare Institutions")
+
+# Create bar plot for age group
+ggplot(data=healthcare_institutions_data, aes(x=age_group, fill=age_group)) + 
+  geom_bar(stat="count") +
+  xlab('Healthcare Institutions Infection by Age Group') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+```{r household-contact-group, echo=FALSE, fig.cap='Household Contact Infection by Age Group'}
+household_contact_data <- covid_data %>%
+  filter(source_of_infection=="Household Contact")
+
+# Create bar plot for age group
+ggplot(data=household_contact_data, aes(x=age_group, fill=age_group)) + 
+  geom_bar(stat="count") +
+  xlab('Household Contact Infection by Age Group') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+```{r close-contact-group, echo=FALSE, fig.cap='Close Contact Infection by Age Group'}
+close_contact_data <- covid_data %>%
+  filter(source_of_infection=="Close Contact")
+
+# Create bar plot for age group
+ggplot(data=close_contact_data, aes(x=age_group, fill=age_group)) + 
+  geom_bar(stat="count") +
+  xlab('Close Contact Infection by Age Group') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+```{r congregate-settings-group, echo=FALSE, fig.cap='Congregate Settings Infection by Age Group'}
+congregate_settings_data <- covid_data %>%
+  filter(source_of_infection=="Outbreaks, Congregate Settings")
+
+# Create bar plot for age group
+ggplot(data=congregate_settings_data, aes(x=age_group, fill=age_group)) + 
+  geom_bar(stat="count") +
+  xlab('Congregate Settings Infection by Age Group') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+```{r travel-group, echo=FALSE, fig.cap='Travel Infection by Age Group'}
+travel_data <- covid_data %>%
+  filter(source_of_infection=="Travel")
+
+# Create bar plot for age group
+ggplot(data=travel_data, aes(x=age_group, fill=age_group)) + 
+  geom_bar(stat="count") +
+  xlab('Travel Infection by Age Group') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+## Seniors remain the most vulnerable among the COVID-19 pandemic
+
+As shown in figure \@ref(fig:fatal-age-group), fatality increases as age increases. Seniors remain the most vulnerable age group among all the age groups. Seniors might have weaker immune systems than other age groups. They are the most vulnerable when facing COVID-19. It is our responsibility to protect ourselves and continue practicing social distancing so that we can protect ourselves as well as the vulnerable population in our society. Even though, we only see the numbers from our data analysis. But even if one fatal case is serious enough, we should do our best to spread truthful information and protect the people around us.
+
+```{r fatal-age-group, echo=FALSE, fig.cap='Fatality by Age Group'}
+fatal_data <- covid_data %>%
+  filter(outcome=="FATAL")
+
+# Create bar plot for age group
+ggplot(data=fatal_data, aes(x=age_group, fill=age_group)) + 
+  geom_bar(stat="count") +
+  xlab('Fatality by Age Group') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+## Weakness and Looking Forward
+
+In this paper, we mostly look at the distributions of the variables we have from the COVID-19 dataset from Open Data Toronto. We have drawn a lot of insights and interesting observations from those distributions. However, there might be a hidden relationship between all these variables. If we dive deeper and start making more regression between all the variables in our datasets, we might understand more than what we have now. Furthermore, as mentioned in section \@ref(limitations), the data is constantly updating as time goes by. The data that we have might not be up-to-date. If we can create some sort of web application that can automate the visualization of the distributions of the variables and also draw relationships between variables automatically, this will allow us to understand and monitor the COVID-19 situation more promptly and draw insights faster.
+
+\newpage
+
+\appendix
+
+# Graphs
+
+```{r gender, echo=FALSE, fig.cap='Gender'}
+# Create bar plot for age group
+ggplot(data=covid_data, aes(x=client_gender, fill=client_gender)) + 
+  geom_bar(stat="count") +
+  xlab('Gender') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+```{r reported-date, echo=FALSE, fig.cap='Reported Date'}
+# Create bar plot for age group
+ggplot(data=covid_data, aes(x=reported_date)) + 
+  geom_line(stat="count") +
+  xlab('Reported Date') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+```{r fatal-gender, echo=FALSE, fig.cap='Fatality by Gender'}
+fatal_data <- covid_data %>%
+  filter(outcome=="FATAL")
+
+# Create bar plot for age group
+ggplot(data=fatal_data, aes(x=client_gender, fill=client_gender)) + 
+  geom_bar(stat="count") +
+  xlab('Fatality by Gender') +
+  ylab('Number of Cases') +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.position = 'none')
+```
+
+
+
+\newpage
+
+# Summary Statistics
+
+```{r summary-statistics, echo=FALSE, message=FALSE, fig.cap='Summary Statistics'}
+summary(covid_data)
+```
+
+\newpage
+
+# Model Summary
+
+```{r model-result, echo='FALSE'}
+model_data <- covid_data %>%
+  mutate(fat=
+           case_when(outcome=='FATAL' ~ 1,
+                     outcome=='RESOLVED' ~ 0))
+
+model <- lm(fat ~ age_group + source_of_infection + client_gender, data=model_data)
+summary(model)
+```
+
+\newpage 
+
+# Reference
+
+https://globalnews.ca/news/8735445/covid-6th-wave-game-plan-canada/
