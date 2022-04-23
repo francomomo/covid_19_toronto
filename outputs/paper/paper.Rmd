@@ -261,7 +261,7 @@ summary(covid_data)
 
 # Model Summary
 
-```{r model-result, echo='FALSE'}
+```{r model-result, echo=FALSE}
 model_data <- covid_data %>%
   mutate(fat=
            case_when(outcome=='FATAL' ~ 1,
